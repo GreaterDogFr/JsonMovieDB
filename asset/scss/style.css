@@ -133,11 +133,37 @@ table {
   border-spacing: 0;
 }
 
+.navbar {
+  background-color: lightblue;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 20px;
+  height: 50px;
+}
+.navbar .searchInput {
+  padding: 5px;
+}
+.navbar .searchButton {
+  padding: 5px;
+}
+
 .container {
   display: flex;
   flex-flow: row wrap;
   gap: 30px;
   justify-content: center;
+}
+.container .carouselContainer {
+  display: flex;
+  flex-flow: row no;
+}
+.container .carouselContainer .movieCard {
+  width: 200px;
+  text-decoration: none;
+  color: black;
 }
 .container .movieCard {
   width: 200px;
@@ -193,7 +219,6 @@ table {
 }
 .singleContainer .singleMovieCard .singleContainerInfo .singleMovieRatings .goodRatings {
   color: green;
-  background-color: grey;
   width: -moz-min-content;
   width: min-content;
   border-radius: 50%;
@@ -201,14 +226,12 @@ table {
 }
 .singleContainer .singleMovieCard .singleContainerInfo .singleMovieRatings .middlingRatings {
   color: yellow;
-  background-color: grey;
   width: -moz-min-content;
   width: min-content;
   border-radius: 50%;
   padding: 10px;
 }
 .singleContainer .singleMovieCard .singleContainerInfo .singleMovieRatings .badRatings {
-  background-color: grey;
   width: -moz-min-content;
   width: min-content;
   border-radius: 50%;

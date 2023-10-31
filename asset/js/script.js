@@ -1,22 +1,31 @@
-/*
-Todo: récupérer les titres, les dates de sorties, les notes, les posters
-
-*/
 let containerBody = document.getElementById("container")
-let debugJson = document.getElementById("debug")
+let carouselContainer = document.getElementById("carouselContainer")
+let btnSearch = document.getElementById("btnSearch")
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Charger le fichier JSON
-    fetch('movies.json')
+const options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTdjYzc0OTU1MTQ5YmUyM2RmODM4MTNmMjAxYTRlOCIsInN1YiI6IjYyODM5OGJiZWM0NTUyMTAzMmE5NTcxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.REF4Oi-K06F7Jq8LolG5vPQtyeiGk3nBFdDyL1FLq7E'
+    }
+};
+
+
+
+btnSearch.addEventListener('click', function () {
+    let movieSearch = document.getElementById("searchInput").value
+
+    fetch(`https://api.themoviedb.org/3/search/movie?query=${movieSearch}&include_adult=false&language=fr-FR&page=1`, options)
+
         .then(response => response.json())
         .then(data => {
             const results = data.results;
             console.log(results)
+            containerBody.innerHTML = ""
             //? On boucle pour récupérer toutes nos données
-            //? Titre, Poster, Note, Date de sortie. gogogogo
             for (let iteration = 0; iteration < results.length; iteration++) {
                 const newMovie = document.createElement("a")
-                newMovie.setAttribute("href", "movie.html?id=" + iteration)
+                newMovie.setAttribute("href", "movie.html?id=" + results[iteration].id)
                 newMovie.setAttribute("class", "movieCard")
 
                 //Affichage du titre
@@ -29,11 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 newPoster.setAttribute("src", "https://image.tmdb.org/t/p/original/" + results[iteration].poster_path)
                 newPoster.setAttribute("class", "moviePoster")
 
-                //Affichage de la DdS
-                //Todo: réorganiser la DdS pour un affichage français
+                //Affichage de la Dds
                 const newReleaseDate = document.createElement("p")
                 newReleaseDate.setAttribute("class", "movieReleaseDate")
-                newReleaseDate.innerHTML += results[iteration].release_date
+
+                const enFormat = new Date(results[iteration].release_date)
+                const options = { year: 'numeric', month: 'long', day: 'numeric' }
+                const frFormat = enFormat.toLocaleDateString("fr-FR", options)
+
+                newReleaseDate.innerHTML += frFormat
 
                 //Affichage de la note
                 const newMovieRating = document.createElement("p")
@@ -56,11 +69,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
             }
 
-
-            //? Debugging !
-            // const jsonData = JSON.stringify(data, null, 2);
-            // debugJson.textContent = jsonData
-            // console.log(data)
         })
         .catch(error => console.error('Une erreur s\'est produite :', error));
+})
+
+/*
+document.addEventListener('DOMContentLoaded', () => {
+    // Charger le fichier JSON
+    fetch('https://api.themoviedb.org/3/movie/now_playing?language=fr-FR&page=1', options)
+        .then(response => response.json())
+        .then(data => {
+            const nowPlayingMoviesList = data.results
+            for (let iteration = 0; iteration < nowPlayingMoviesList.length; iteration++) {
+                const carousel = document.createElement("div")
+                carousel.setAttribute("class","carouselContainer")
+
+                const newMovie = document.createElement("a")
+                newMovie.setAttribute("href", "movie.html?id=" + nowPlayingMoviesList[iteration].id)
+                newMovie.setAttribute("class", "movieCard")
+
+                //Affichage de l'image
+                const newPoster = document.createElement("img")
+                newPoster.setAttribute("src", "https://image.tmdb.org/t/p/original/" + nowPlayingMoviesList[iteration].poster_path)
+                newPoster.setAttribute("class", "moviePoster")
+
+                carouselContainer.appendChild(carousel)
+                carousel.appendChild(newMovie)
+                newMovie.appendChild(newPoster)
+
+            }
+        })
+        .catch(error => console.error('Une erreur s\'est produite :', error));
+
 });
+*/
