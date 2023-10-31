@@ -22,6 +22,13 @@ btnSearch.addEventListener('click', function () {
             const results = data.results;
             console.log(results)
             containerBody.innerHTML = ""
+            const newSearchResultContainer = document.createElement("div")
+            newSearchResultContainer.setAttribute("class", "searchResultContainer")
+            const newSearchResultTitle = document.createElement("h2")
+            newSearchResultTitle.innerHTML = "Résultat de la recherche"
+
+            containerBody.appendChild(newSearchResultTitle)
+            containerBody.appendChild(newSearchResultContainer)
             //? On boucle pour récupérer toutes nos données
             for (let iteration = 0; iteration < results.length; iteration++) {
                 const newMovie = document.createElement("a")
@@ -61,7 +68,7 @@ btnSearch.addEventListener('click', function () {
                 }
                 newMovieRating.innerHTML += movieRating
 
-                containerBody.appendChild(newMovie)
+                newSearchResultContainer.appendChild(newMovie)
                 newMovie.appendChild(newPoster)
                 newMovie.appendChild(newTitle)
                 newMovie.appendChild(newReleaseDate)
